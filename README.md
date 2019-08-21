@@ -7,6 +7,9 @@ Node.js developed RESTFul APIs Test Questions for Natterbase Backend Software En
 [![Coverage Status](https://coveralls.io/repos/github/snoseeds/natterbase-test/badge.svg?branch=develop)](https://coveralls.io/github/snoseeds/natterbase-test?branch=develop)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/87cbfa83452cbb0dd136/test_coverage)](https://codeclimate.com/github/snoseeds/natterbase-test/test_coverage)
 
+## Heroku Hosted API
+natterbase-test APIs is currently on version 1 and is hosted on heroku [link](https://snoseeds-natterbase-test-apis.herokuapp.com)
+
 #### Api Endpoints
 <table>
     <tr>
@@ -76,6 +79,8 @@ run:
 ## Heroku Hosted API
 natterbase-test APIs is currently on version 1 and is hosted on heroku [link](https://snoseeds-natterbase-test-apis.herokuapp.com)
 
+## API Documentation
+Built with Postman [link](https://documenter.getpostman.com/view/6777319/SVfJVXQN)
 
 # Author
 
