@@ -1,4 +1,3 @@
 node_modules
 .eslintrc.json
 .nyc_output/
-server/controllers/questionOneSolutionController.js

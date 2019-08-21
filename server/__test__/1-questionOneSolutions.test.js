@@ -4,21 +4,28 @@ import chai, { expect } from 'chai';
 
 import app from '../app';
 
+import extractPropsOfObject from '../helpers/extractPropsOfObject';
+
 chai.use(chaiHttp);
 
 describe('Testing Question 1 Solution Controller', () => {
   describe('Testing Request Body\'s Input Validation', () => {
-    const inputValidationUrl = '/api/v1/question-one-solution';
+    const data = {
+      type: 'durban',
+      crux: 'Indices',
+      color: 'green',
+      title: 'Indict the idiot',
+    };
+    const rules = ['type', 'crux', 'color', 'title'];
+    const inputValidationUrl = '/api/v1/question-one-solutions/input-validation';
     it(
       'should return "valid" if all the required properties are given in the request body',
       (done) => {
         chai.request(app)
           .post(inputValidationUrl)
           .send({
-            type: 'durban',
-            crux: 'Indices',
-            color: 'green',
-            title: 'Indict the idiot',
+            data,
+            rules,
           })
           .end((error, response) => {
             expect(response.body).to.be.an('object');
@@ -33,46 +40,44 @@ describe('Testing Question 1 Solution Controller', () => {
     );
 
     it(
-      'should return list having only "type" when "type" parameter is missing in request body',
+      'should return list having only "type" when "type" parameter is missing in request body\'s data prop',
       (done) => {
         chai.request(app)
           .post(inputValidationUrl)
           .send({
-            crux: 'Indices',
-            color: 'green',
-            title: 'Indict the idiot',
+            data: extractPropsOfObject(data, ['crux', 'color', 'title']),
+            rules,
           })
           .end((error, response) => {
             expect(response.body).to.be.an('object');
-            expect(response).to.have.status(401);
-            expect(response.body.status).to.equal(401);
-            expect(response.body).to.have.property('data');
-            expect(response.body.data).to.be.an('array');
-            expect(response.body.data.length).to.equal(1);
-            expect(response.body.data[0]).to.equal('type');
+            expect(response).to.have.status(400);
+            expect(response.body.status).to.equal(400);
+            expect(response.body).to.have.property('missingData');
+            expect(response.body.missingData).to.be.an('array');
+            expect(response.body.missingData.length).to.equal(1);
+            expect(response.body.missingData[0]).to.equal('type');
             done();
           });
       },
     );
 
     it(
-      'should return list having "crux" when "crux" parameter is missing in request body',
+      'should return list having "crux" when "crux" parameter is missing in request body\'s data prop',
       (done) => {
         chai.request(app)
           .post(inputValidationUrl)
           .send({
-            type: 'durban',
-            color: 'green',
-            title: 'Indict the idiot',
+            data: extractPropsOfObject(data, ['type', 'color', 'title']),
+            rules,
           })
           .end((error, response) => {
             expect(response.body).to.be.an('object');
-            expect(response).to.have.status(401);
-            expect(response.body.status).to.equal(401);
-            expect(response.body).to.have.property('data');
-            expect(response.body.data).to.be.an('array');
-            expect(response.body.data.length).to.equal(1);
-            expect(response.body.data[0]).to.equal('crux');
+            expect(response).to.have.status(400);
+            expect(response.body.status).to.equal(400);
+            expect(response.body).to.have.property('missingData');
+            expect(response.body.missingData).to.be.an('array');
+            expect(response.body.missingData.length).to.equal(1);
+            expect(response.body.missingData[0]).to.equal('crux');
             done();
           });
       },
@@ -84,18 +89,17 @@ describe('Testing Question 1 Solution Controller', () => {
         chai.request(app)
           .post(inputValidationUrl)
           .send({
-            type: 'durban',
-            crux: 'Indices',
-            title: 'Indict the idiot',
+            data: extractPropsOfObject(data, ['type', 'crux', 'title']),
+            rules,
           })
           .end((error, response) => {
             expect(response.body).to.be.an('object');
-            expect(response).to.have.status(401);
-            expect(response.body.status).to.equal(401);
-            expect(response.body).to.have.property('data');
-            expect(response.body.data).to.be.an('array');
-            expect(response.body.data.length).to.equal(1);
-            expect(response.body.data[0]).to.equal('color');
+            expect(response).to.have.status(400);
+            expect(response.body.status).to.equal(400);
+            expect(response.body).to.have.property('missingData');
+            expect(response.body.missingData).to.be.an('array');
+            expect(response.body.missingData.length).to.equal(1);
+            expect(response.body.missingData[0]).to.equal('color');
             done();
           });
       },
@@ -107,18 +111,17 @@ describe('Testing Question 1 Solution Controller', () => {
         chai.request(app)
           .post(inputValidationUrl)
           .send({
-            type: 'durban',
-            crux: 'Indices',
-            crux: 'Indices',
+            data: extractPropsOfObject(data, ['type', 'crux', 'color']),
+            rules,
           })
           .end((error, response) => {
             expect(response.body).to.be.an('object');
-            expect(response).to.have.status(401);
-            expect(response.body.status).to.equal(401);
-            expect(response.body).to.have.property('data');
-            expect(response.body.data).to.be.an('array');
-            expect(response.body.data.length).to.equal(1);
-            expect(response.body.data[0]).to.equal('title');
+            expect(response).to.have.status(400);
+            expect(response.body.status).to.equal(400);
+            expect(response.body).to.have.property('missingData');
+            expect(response.body.missingData).to.be.an('array');
+            expect(response.body.missingData.length).to.equal(1);
+            expect(response.body.missingData[0]).to.equal('title');
             done();
           });
       },
@@ -130,18 +133,18 @@ describe('Testing Question 1 Solution Controller', () => {
         chai.request(app)
           .post(inputValidationUrl)
           .send({
-            color: 'green',
-            title: 'Indict the idiot',
+            data: extractPropsOfObject(data, ['color', 'title']),
+            rules,
           })
           .end((error, response) => {
             expect(response.body).to.be.an('object');
-            expect(response).to.have.status(401);
-            expect(response.body.status).to.equal(401);
-            expect(response.body).to.have.property('data');
-            expect(response.body.data).to.be.an('array');
-            expect(response.body.data.length).to.equal(2);
-            expect(response.body.data[0]).to.equal('type');
-            expect(response.body.data[1]).to.equal('crux');
+            expect(response).to.have.status(400);
+            expect(response.body.status).to.equal(400);
+            expect(response.body).to.have.property('missingData');
+            expect(response.body.missingData).to.be.an('array');
+            expect(response.body.missingData.length).to.equal(2);
+            expect(response.body.missingData[0]).to.equal('type');
+            expect(response.body.missingData[1]).to.equal('crux');
             done();
           });
       },
@@ -153,18 +156,18 @@ describe('Testing Question 1 Solution Controller', () => {
         chai.request(app)
           .post(inputValidationUrl)
           .send({
-            crux: 'Indices',
-            title: 'Indict the idiot',
+            data: extractPropsOfObject(data, ['crux', 'title']),
+            rules,
           })
           .end((error, response) => {
             expect(response.body).to.be.an('object');
-            expect(response).to.have.status(401);
-            expect(response.body.status).to.equal(401);
-            expect(response.body).to.have.property('data');
-            expect(response.body.data).to.be.an('array');
-            expect(response.body.data.length).to.equal(2);
-            expect(response.body.data[0]).to.equal('type');
-            expect(response.body.data[1]).to.equal('color');
+            expect(response).to.have.status(400);
+            expect(response.body.status).to.equal(400);
+            expect(response.body).to.have.property('missingData');
+            expect(response.body.missingData).to.be.an('array');
+            expect(response.body.missingData.length).to.equal(2);
+            expect(response.body.missingData[0]).to.equal('type');
+            expect(response.body.missingData[1]).to.equal('color');
             done();
           });
       },
@@ -176,64 +179,66 @@ describe('Testing Question 1 Solution Controller', () => {
         chai.request(app)
           .post(inputValidationUrl)
           .send({
-            crux: 'Indices',
-            color: 'green',
+            data: extractPropsOfObject(data, ['crux', 'color']),
+            rules,
           })
           .end((error, response) => {
             expect(response.body).to.be.an('object');
-            expect(response).to.have.status(401);
-            expect(response.body.status).to.equal(401);
-            expect(response.body).to.have.property('data');
-            expect(response.body.data).to.be.an('array');
-            expect(response.body.data.length).to.equal(2);
-            expect(response.body.data[0]).to.equal('type');
-            expect(response.body.data[1]).to.equal('title');
+            expect(response).to.have.status(400);
+            expect(response.body.status).to.equal(400);
+            expect(response.body).to.have.property('missingData');
+            expect(response.body.missingData).to.be.an('array');
+            expect(response.body.missingData.length).to.equal(2);
+            expect(response.body.missingData[0]).to.equal('type');
+            expect(response.body.missingData[1]).to.equal('title');
             done();
           });
       },
     );
 
     it(
-      'should return list having both "type, crux, and color" when "type, crux, and color" parameters are missing in request body',
+      'should return list having "type, crux, and color" when "type, crux, and color" parameters are missing in request body',
       (done) => {
         chai.request(app)
           .post(inputValidationUrl)
           .send({
-            title: 'Indict the idiot',
+            data: extractPropsOfObject(data, ['title']),
+            rules,
           })
           .end((error, response) => {
             expect(response.body).to.be.an('object');
-            expect(response).to.have.status(401);
-            expect(response.body.status).to.equal(401);
-            expect(response.body).to.have.property('data');
-            expect(response.body.data).to.be.an('array');
-            expect(response.body.data.length).to.equal(3);
-            expect(response.body.data[0]).to.equal('type');
-            expect(response.body.data[1]).to.equal('crux');
-            expect(response.body.data[1]).to.equal('color');
+            expect(response).to.have.status(400);
+            expect(response.body.status).to.equal(400);
+            expect(response.body).to.have.property('missingData');
+            expect(response.body.missingData).to.be.an('array');
+            expect(response.body.missingData.length).to.equal(3);
+            expect(response.body.missingData[0]).to.equal('type');
+            expect(response.body.missingData[1]).to.equal('crux');
+            expect(response.body.missingData[2]).to.equal('color');
             done();
           });
       },
     );
 
     it(
-      'should return list having both "type, crux, and title" when "type, crux, and title" parameters are missing in request body',
+      'should return list having "type, crux, and title" when "type, crux, and title" parameters are missing in request body',
       (done) => {
         chai.request(app)
           .post(inputValidationUrl)
           .send({
-            color: 'green',
+            data: extractPropsOfObject(data, ['color']),
+            rules,
           })
           .end((error, response) => {
             expect(response.body).to.be.an('object');
-            expect(response).to.have.status(401);
-            expect(response.body.status).to.equal(401);
-            expect(response.body).to.have.property('data');
-            expect(response.body.data).to.be.an('array');
-            expect(response.body.data.length).to.equal(3);
-            expect(response.body.data[0]).to.equal('type');
-            expect(response.body.data[1]).to.equal('crux');
-            expect(response.body.data[1]).to.equal('title');
+            expect(response).to.have.status(400);
+            expect(response.body.status).to.equal(400);
+            expect(response.body).to.have.property('missingData');
+            expect(response.body.missingData).to.be.an('array');
+            expect(response.body.missingData.length).to.equal(3);
+            expect(response.body.missingData[0]).to.equal('type');
+            expect(response.body.missingData[1]).to.equal('crux');
+            expect(response.body.missingData[2]).to.equal('title');
             done();
           });
       },
