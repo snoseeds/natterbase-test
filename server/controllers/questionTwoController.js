@@ -1,14 +1,13 @@
-import extractPropsOfObject from '../helpers/extractPropsOfObject';
 import issueResponse from '../helpers/issueResponse';
 
 const questionTwoSolution = {
   removeObjectProperty(req, res) {
     const { data, item } = req.body;
-    const allPropsArr = Object.keys(data);
-    const propsToBeReturnedArr = allPropsArr.filter(prop => prop !== item);
-    return propsToBeReturnedArr.length === allPropsArr.length
+    const originalLength = Object.keys(data).length;
+    delete data[item];
+    return Object.keys(data).length === originalLength
       ? issueResponse(res, 400, 'error', 'attribute not found')
-      : issueResponse(res, 200, 'data', extractPropsOfObject(data, propsToBeReturnedArr));
+      : issueResponse(res, 200, 'data', data);
   },
 };
 
