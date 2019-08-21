@@ -14,21 +14,20 @@ describe('Testing Question 2 Solution Controller', () => {
       color: 'green',
       title: 'Indict the idiot',
     };
-    const item = 'type';
     const removeObjectPropertyUrl = '/api/v1/question-two-solutions/remove-prop-from-object';
     it(
-      'should return "data" object without property corresponding to string value stored in "item"',
+      'should return "data" object without property corresponding to string value stored in item',
       (done) => {
         chai.request(app)
           .patch(removeObjectPropertyUrl)
           .send({
             data,
-            item,
+            item: 'type',
           })
           .end((error, response) => {
             expect(response.body).to.be.an('object');
-            expect(response).to.have.status(204);
-            expect(response.body.status).to.equal(204);
+            expect(response).to.have.status(200);
+            expect(response.body.status).to.equal(200);
             expect(response.body).to.have.property('data');
             expect(response.body.data).to.be.an('object');
             expect(response.body.data).to.have.property('crux');
@@ -45,7 +44,7 @@ describe('Testing Question 2 Solution Controller', () => {
       'should return "attribute not found" when string value in property "item" does not exist as a property on "data" object',
       (done) => {
         chai.request(app)
-          .post(inputValidationUrl)
+          .patch(removeObjectPropertyUrl)
           .send({
             data,
             item: 'nonExistentItem',
@@ -54,7 +53,7 @@ describe('Testing Question 2 Solution Controller', () => {
             expect(response.body).to.be.an('object');
             expect(response).to.have.status(400);
             expect(response.body.status).to.equal(400);
-            expect(response.body).to.have.property('errror');
+            expect(response.body).to.have.property('error');
             expect(response.body.error).to.be.a('string');
             expect(response.body.error).to.equal('attribute not found');
             done();

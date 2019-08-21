@@ -1,4 +1,4 @@
-import issueErrorResponse from '../helpers/issueErrorResponse';
+import issueResponse from '../helpers/issueResponse';
 
 const questionOneSolution = {
   inputValidation(req, res) {
@@ -7,11 +7,8 @@ const questionOneSolution = {
     const missingPropertiesArr = rules
       .filter(rule => suppliedDataProperties.every(prop => prop !== rule));
     return missingPropertiesArr.length === 0
-      ? res.status(200).json({
-        status: 200,
-        message: 'valid',
-      })
-      : issueErrorResponse(res, 400, missingPropertiesArr);
+      ? issueResponse(res, 200, 'message', 'valid')
+      : issueResponse(res, 400, 'missingData', missingPropertiesArr);
   },
 };
 
