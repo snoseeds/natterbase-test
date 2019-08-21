@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node -r esm ./server",
     "start:dev": "nodemon --exec node -r esm ./server",
-    "test": "nyc mocha -r esm ./server/__test__/*.js --timeout 10000 --exit"
+    "test": "nyc mocha -r esm ./server/__tests__/*.js --timeout 10000 --exit",
+    "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
