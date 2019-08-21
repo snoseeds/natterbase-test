@@ -76,8 +76,6 @@ run:
 ```Bash
     $ npm test
 ```
-## Heroku Hosted API
-natterbase-test APIs is currently on version 1 and is hosted on heroku [link](https://snoseeds-natterbase-test-apis.herokuapp.com)
 
 ## API Documentation
 Built with Postman [link](https://documenter.getpostman.com/view/6777319/SVfJVXQN)
